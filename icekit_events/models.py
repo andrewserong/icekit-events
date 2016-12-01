@@ -195,6 +195,7 @@ class RecurrenceRule(AbstractBaseModel):
     def __str__(self):
         return self.description
 
+
 class EventType(TitleSlugMixin):
     is_public = models.BooleanField(
         "Show to public?",
@@ -204,6 +205,22 @@ class EventType(TitleSlugMixin):
                   "Non-public types are used to indicate special behaviour, "
                   "such as education or members events."
     )
+
+
+@encoding.python_2_unicode_compatible
+class OccurrenceUrlPrefix(AbstractBaseModel):
+    name = models.TextField(
+        help_text="Name of the URL to use for occurrences.",
+        unique=True,
+        blank=True
+    )
+    url = models.URLField(
+        help_text="URL to use for each occurrence for an event."
+    )
+
+    def __str__(self):
+        return self.name
+
 
 @encoding.python_2_unicode_compatible
 class EventBase(PolymorphicModel, AbstractBaseModel, PublishingModel,
@@ -294,6 +311,17 @@ class EventBase(PolymorphicModel, AbstractBaseModel, PublishingModel,
         null=True,
         help_text=_('The URL where visitors can arrange to attend an event'
                     ' by purchasing tickets or RSVPing.')
+    )
+    occurrence_url = models.CharField(_("Occurrence URL"),
+        max_length=255,
+        choices=[(o_url.url, o_url.name) for o_url in OccurrenceUrlPrefix.objects.all()],
+        blank=True,
+        null=True,
+        help_text=_('The URL to use for each occurrence.')
+    )
+    occurrence_append_external_ref = models.BooleanField(
+        default=True,
+        help_text=_("Append occurrence external_ref to each occurrence URL.")
     )
 
     class Meta:

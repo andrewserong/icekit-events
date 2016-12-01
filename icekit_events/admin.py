@@ -317,6 +317,10 @@ class RecurrenceRuleAdmin(admin.ModelAdmin):
         return JsonResponse(data)
 
 
+class OccurrenceUrlAdmin(admin.ModelAdmin):
+    pass
+
+
 class EventTypeAdmin(TitleSlugAdmin):
     list_display = TitleSlugAdmin.list_display + ('is_public',)
     list_filter = ('is_public',)
@@ -325,3 +329,4 @@ class EventTypeAdmin(TitleSlugAdmin):
 admin.site.register(models.EventBase, EventAdmin)
 admin.site.register(models.EventType, EventTypeAdmin)
 admin.site.register(models.RecurrenceRule, RecurrenceRuleAdmin)
+admin.site.register(models.OccurrenceUrlPrefix, OccurrenceUrlAdmin)
