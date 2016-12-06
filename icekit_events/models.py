@@ -452,8 +452,8 @@ class EventBase(PolymorphicModel, AbstractBaseModel, ICEkitContentsMixin,
     def get_absolute_url(self):
         return reverse('icekit_events_eventbase_detail', args=(self.slug,))
 
-    def get_occurrence_url(self):
-        return self.get_absolute_url()
+    # def get_occurrence_url(self):
+    #     return self.get_absolute_url()
 
     def get_contained_events(self):
         events = EventBase.objects.filter(
@@ -805,7 +805,7 @@ class Occurrence(AbstractBaseModel):
         return self.end < djtz.now()
 
     def get_absolute_url(self):
-        return self.event.get_occurence_url(self)
+        return self.event.get_occurrence_url(self)
 
 
 def get_occurrence_times_for_event(event):
